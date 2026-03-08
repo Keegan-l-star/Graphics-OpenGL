@@ -8,7 +8,14 @@ run: main
 	./main
 
 zip:
-	zip u24594522.zip *.cpp .h
+	zip matrix.zip *.cpp .h
 
 rz:
-	rm -f u24594522.zip
+	rm -f matrix.zip
+
+unzip:
+	if [ -f "Student Files.zip" ]; then \
+		unzip -o "Student Files.zip"; \
+	else \
+		echo "Student Files.zip not found"; \
+	fi
