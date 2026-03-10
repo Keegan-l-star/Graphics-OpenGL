@@ -54,7 +54,7 @@ public:
 
     float determinant() const;
 
-    Matrix<m,n> transpose() const;
+    //Matrix<m,n> transpose() const;
     
 };
 

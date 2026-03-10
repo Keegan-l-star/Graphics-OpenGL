@@ -159,18 +159,6 @@ Matrix<n-1, m-1> submatrix(const Matrix<n, m>& mat, int ignrRow, int ignrCol) {
     return result;
 }
 
-template<int n, int m>
-Matrix<m,n> Matrix<n,m>::transpose() const{
-    Matrix<m,n> result;
-    for (size_t i = 0; i < count; i++)
-    {
-        for (size_t j = 0; j < count; j++)
-        {
-            result[j][i] = arr[i][j];
-        }
-    }
-    return result;
-}
 
 
     
