@@ -31,6 +31,7 @@ class Square: public Shape<n> {
             std::cout << "_ P4 _ " << std::endl;
             bl.print();
         }
+        void zoom(int percent);
 };
 
 #include "Square.cpp"

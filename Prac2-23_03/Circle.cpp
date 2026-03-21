@@ -2,12 +2,23 @@ template<int n>
 Circle<n>::Circle(const Vector<n>& center, float radius, int resolution){
     this->center = center;
     this->radius = radius;
-    this->resolution = resolution > 2 ? resolution : 32;
+    if(resolution > 2 ){
+        this->resolution = resolution;
+    }else{
+        this->resolution = 32;
+    }
 }
 
 template<int n>
 Circle<n>& Circle<n>::operator*=(const Matrix<n,n>& m){
-    center=Vector<n>(m*(Matrix<n,1>)center);
+    Matrix<n,1> hc = (Matrix<n,1>)center;
+    if (n == 3) {
+        hc[2][0] = 1.0f;
+    }
+    center = Vector<n>(m * hc);
+    if (n == 3) {
+        center[2] = 0.0f;
+    }
     return *this;
 }
 
@@ -56,5 +67,10 @@ void Circle<n>::print() const{
     center.print();
     std::cout << "_ Radius _ " << std::endl;
     std::cout << radius << std::endl;
-
 }
+
+template<int n>
+void Circle<n>::zoom(int percent){
+    radius*percent;
+}
+

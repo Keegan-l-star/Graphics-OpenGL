@@ -173,6 +173,7 @@ int main(int argc, char const *argv[])
 
     */
 
+    /*
 
     //Create 3D triangle
     Vector<3> A{5, 7, 1};
@@ -291,5 +292,153 @@ int main(int argc, char const *argv[])
     float value = std::pow(std::max(0.0f, result_n * VECTOR_R / (scalar_r * scalar_r)), p);
 
     std::cout << "Final form: " << value << std::endl;
+
+    */
+
+    std::cout<<"=========Transformations and shaders========="<<std::endl;
+    int angle=284;
+    Vector<3> point{4,4,9};
+    Vector<3> T={1,4,2};
+
+    Vector<3> axisP1{1,4,2};
+    Vector<3> axisP2{8,8,10};
+
+    std::cout<<"Directional vector of rotation axis: "<<std::endl;
+    Vector<3> axisDir = axisP2 - axisP1;
+    axisDir.print();
+
+    std::cout<<"Normalise directional vector: "<<std::endl;
+    float axisLength = axisDir.magnitude();
+    std::cout<<"Axis length: "<<axisLength<<std::endl;
+    Vector<3> axisUnit = axisDir * (1.0f / axisLength);
+    std::cout<<"\nAxis unit vector: "<<std::endl;
+    axisUnit.print();
+
+    std::cout<<"\nCentre of the object: "<<std::endl;
+    
+    T.print();
+
+    std::cout<<"\nTranslation matricx to move centre to origin: "<<std::endl;
+    Matrix<4,4> MT;
+    MT[0][0] = 1; MT[0][1] = 0; MT[0][2] = 0; MT[0][3] = -T[0];
+    MT[1][0] = 0; MT[1][1] = 1; MT[1][2] = 0; MT[1][3] = -T[1];
+    MT[2][0] = 0; MT[2][1] = 0; MT[2][2] = 1; MT[2][3] = -T[2];
+    MT[3][0] = 0; MT[3][1] = 0; MT[3][2] = 0; MT[3][3] = 1;
+    MT.print();
+
+    std::cout<<"\nlength of Projection when x=0"<<std::endl;
+    float squared= axisLength*axisLength;
+    float projLength = sqrt(((axisDir[1]*axisDir[1])/(squared))+((axisDir[2]*axisDir[2])/(squared)));
+    std::cout<<projLength<<std::endl;
+
+    std::cout<<"\nRotation matrix around arbitrary axis: "<<std::endl;
+    float radian = angle * M_PI / 180.0f;
+
+    float c = cos(radian);
+    float s = sin(radian);
+    float nc = cos(-radian);
+    float ns = sin(-radian);
+
+    Matrix<4,4> RY;
+    RY[0][0] = projLength; RY[0][1] = 0; RY[0][2] = axisUnit[0]; RY[0][3] = 0;
+    RY[1][0] = 0; RY[1][1] = 1; RY[1][2] = 0; RY[1][3] = 0;
+    RY[2][0] = -axisUnit[0]; RY[2][1] = 0; RY[2][2] = projLength; RY[2][3] = 0;
+    RY[3][0] = 0; RY[3][1] = 0; RY[3][2] = 0; RY[3][3] = 1;
+
+    Matrix<4,4> RY_inv;
+    RY_inv[0][0] = projLength; RY_inv[0][1] = 0; RY_inv[0][2] = -axisUnit[0]; RY_inv[0][3] = 0;
+    RY_inv[1][0] = 0; RY_inv[1][1] = 1; RY_inv[1][2] = 0; RY_inv[1][3] = 0;
+    RY_inv[2][0] = axisUnit[0]; RY_inv[2][1] = 0; RY_inv[2][2] = projLength; RY_inv[2][3] = 0;
+    RY_inv[3][0] = 0; RY_inv[3][1] = 0; RY_inv[3][2] = 0; RY_inv[3][3] = 1;
+
+    float cosX = axisUnit[2] / projLength;
+    float sinX = axisUnit[1] / projLength;
+
+    Matrix<4,4> RX;
+    RX[0][0] = 1; RX[0][1] = 0; RX[0][2] = 0; RX[0][3] = 0;
+    RX[1][0] = 0; RX[1][1] = cosX; RX[1][2] = -sinX; RX[1][3] = 0;
+    RX[2][0] = 0; RX[2][1] = sinX; RX[2][2] = cosX; RX[2][3] = 0;
+    RX[3][0] = 0; RX[3][1] = 0; RX[3][2] = 0; RX[3][3] = 1;
+
+    std::cout<<"final R_x(theta_x)\n";
+    RX.print();
+    std::cout<<"\n the opp\n";
+    
+
+    Matrix<4,4> RX_inv;
+    RX_inv[0][0] = 1; RX_inv[0][1] = 0; RX_inv[0][2] = 0; RX_inv[0][3] = 0;
+    RX_inv[1][0] = 0; RX_inv[1][1] = cosX; RX_inv[1][2] = sinX; RX_inv[1][3] = 0;
+    RX_inv[2][0] = 0; RX_inv[2][1] = -sinX; RX_inv[2][2] = cosX; RX_inv[2][3] = 0;
+    RX_inv[3][0] = 0; RX_inv[3][1] = 0; RX_inv[3][2] = 0; RX_inv[3][3] = 1;
+    RX_inv.print();
+    std::cout<<"\n";
+
+    std::cout<<"\n";
+    Matrix<4,4> RZ;
+    RZ[0][0] = c; RZ[0][1] = -s; RZ[0][2] = 0; RZ[0][3] = 0;
+    RZ[1][0] = s; RZ[1][1] = c; RZ[1][2] = 0; RZ[1][3] = 0;
+    RZ[2][0] = 0; RZ[2][1] = 0; RZ[2][2] = 1; RZ[2][3] = 0;
+    RZ[3][0] = 0; RZ[3][1] = 0; RZ[3][2] = 0; RZ[3][3] = 1;
+
+    Matrix<4,4> MTT;
+    MTT[0][0] = 1; MTT[0][1] = 0; MTT[0][2] = 0; MTT[0][3] = T[0];
+    MTT[1][0] = 0; MTT[1][1] = 1; MTT[1][2] = 0; MTT[1][3] = T[1];
+    MTT[2][0] = 0; MTT[2][1] = 0; MTT[2][2] = 1; MTT[2][3] = T[2];
+    MTT[3][0] = 0; MTT[3][1] = 0; MTT[3][2] = 0; MTT[3][3] = 1;
+
+    Matrix<4,4> R = MTT * RX_inv * RY_inv * RZ * RY * RX * MT;
+    R.print();
+
+    
+    float scale_x=0.5;
+    float scale_y=0.4f;
+    float scale_z=0.9f;
+    std::cout<<"\nTranslation matrix for scaling: "<<scale_x<<" units on x axis"<<scale_y<<" units on y axis"<<scale_z<<" units on z axis"<<std::endl;
+    Matrix<4,4> scaling;
+    scaling[0][0] = scale_x; scaling[0][1] = 0; scaling[0][2] = 0; scaling[0][3] = 0;
+    scaling[1][0] = 0; scaling[1][1] = scale_y; scaling[1][2] = 0; scaling[1][3] = 0;
+    scaling[2][0] = 0; scaling[2][1] = 0; scaling[2][2] = scale_z; scaling[2][3] = 0;
+    scaling[3][0] = 0; scaling[3][1] = 0; scaling[3][2] = 0; scaling[3][3] = 1;
+    scaling.print();
+
+    int degrees=103;
+    float radians = degrees * M_PI / 180.0f;
+    std::cout<<"\nTranslation matrix for rotating about the y: "<<degrees<<" degrees"<<std::endl;
+    Matrix<4,4> rotY;
+    rotY[0][0] = cos(radians); rotY[0][1] = 0; rotY[0][2] = sin(radians); rotY[0][3] = 0;
+    rotY[1][0] = 0; rotY[1][1] = 1; rotY[1][2] = 0; rotY[1][3] = 0;
+    rotY[2][0] = -sin(radians); rotY[2][1] = 0; rotY[2][2] = cos(radians); rotY[2][3] = 0;
+    rotY[3][0] = 0; rotY[3][1] = 0; rotY[3][2] = 0; rotY[3][3] = 1;
+    rotY.print();
+
+    std::cout<<"\nRotation matric for rotating about the z: "<<degrees<<" degrees"<<std::endl;
+    Matrix<4,4> R_Z;
+    R_Z[0][0] = cos(radians); R_Z[0][1] = -sin(radians); R_Z[0][2] = 0; R_Z[0][3] = 0;
+    R_Z[1][0] = sin(radians); R_Z[1][1] = cos(radians); R_Z[1][2] = 0; R_Z[1][3] = 0;
+    R_Z[2][0] = 0; R_Z[2][1] = 0; R_Z[2][2] = 1; R_Z[2][3] = 0;
+    R_Z[3][0] = 0; R_Z[3][1] = 0; R_Z[3][2] = 0; R_Z[3][3] = 1;
+    R_Z.print();
+
+    std::cout<<"\nRotation matric for rotating about the x: "<<degrees<<" degrees"<<std::endl;  
+    Matrix<4,4> R_X;
+    R_X[0][0] = 1; R_X[0][1] = 0; R_X[0][2] = 0; R_X[0][3] = 0;
+    R_X[1][0] = 0; R_X[1][1] = cos(radians); R_X[1][2] = -sin(radians); R_X[1][3] = 0;
+    R_X[2][0] = 0; R_X[2][1] = sin(radians); R_X[2][2] = cos(radians); R_X[2][3] = 0;
+    R_X[3][0] = 0; R_X[3][1] = 0; R_X[3][2] = 0; R_X[3][3] = 1;
+    R_X.print();
+
+    float trans_x=0.8f;
+    float trans_y=-0.1f;
+    float trans_z=-0.6f;
+    std::cout<<"\nTranslation matrix for translating: "<<trans_x<<" units on x axis"<<trans_y<<" units on y axis"<<trans_z<<" units on z axis"<<std::endl;
+    Matrix<4,4> translation;
+    translation[0][0] = 1; translation[0][1] = 0; translation[0][2] = 0; translation[0][3] = trans_x;
+    translation[1][0] = 0; translation[1][1] = 1; translation[1][2] = 0; translation[1][3] = trans_y;
+    translation[2][0] = 0; translation[2][1] = 0; translation[2][2] = 1; translation[2][3] = trans_z;
+    translation[3][0] = 0; translation[3][1] = 0; translation[3][2] = 0; translation[3][3] = 1;
+    translation.print();
+
+    
+
     return 0;
 }

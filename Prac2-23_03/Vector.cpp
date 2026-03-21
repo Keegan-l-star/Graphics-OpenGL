@@ -97,6 +97,7 @@ Vector<n>::operator Matrix<n,1>() const{
     return result;
 }
 
+
 template <int n>
 Vector<n> Vector<n>::unitVector() const{
     float mag=magnitude();

@@ -95,7 +95,7 @@ Matrix<n,m> Matrix<n,m>::operator*(const float s) const{
 
 template<int n,int m>
 Matrix<n,m> Matrix<n,m>::operator+(const Matrix<n,m> b)const{
-    Matrix result;
+    Matrix<n,m> result;
     for(int i=0;i<n;i++){
         for(int j=0; j<m;j++){
             result[i][j]=arr[i][j]+b[i][j];

@@ -9,7 +9,9 @@ clean:
 
 run:
 	./main
-
+val:
+	valgrind ./main
+	
 all:
 	make clean
 	make

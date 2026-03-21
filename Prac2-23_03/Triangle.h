@@ -26,6 +26,7 @@ class Triangle: public Shape<n> {
             std::cout << "_ P3 _ " << std::endl;
             p3.print();
         }
+        void zoom(int percent);
 };
 
 #include "Triangle.cpp"

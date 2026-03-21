@@ -20,6 +20,7 @@ class Circle: public Shape<n> {
         virtual int getNumPoints() const;
 
         virtual void print() const;
+        void zoom(int percent);
 };
 
 #include "Circle.cpp"
