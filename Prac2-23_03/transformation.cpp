@@ -149,8 +149,8 @@ Matrix<n,n> translation(float x, float y, float z) {
 
 
 template<int n>
-Matrix<n,n> scaling(int m){
-    float s = (float)m;
+Matrix<n,n> scaling(float m){
+    float s = m;
     Matrix<n,n> S;
     for(int i=0;i<n;i++){
         for(int j=0;j<n;j++){

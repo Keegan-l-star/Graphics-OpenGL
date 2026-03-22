@@ -1,8 +1,13 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#include <sstream>
+#include <iomanip>
+#include <cmath>
+
 #include "Shape.h"
 #include "Vector.h"
+#include "transformation.h"
 
 template <int n>
 class Triangle: public Shape<n> {
@@ -26,7 +31,9 @@ class Triangle: public Shape<n> {
             std::cout << "_ P3 _ " << std::endl;
             p3.print();
         }
+        virtual std::string fprint() const;
         void zoom(int percent);
+        void rotate(int degrees);
 };
 
 #include "Triangle.cpp"

@@ -1,9 +1,14 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include <sstream>
+#include <iomanip>
+#include <cmath>
+
 #include "Shape.h"
 #include "Matrix.h"
 #include "Vector.h"
+#include "transformation.h"
 
 template <int n>
 class Square: public Shape<n> {
@@ -31,7 +36,9 @@ class Square: public Shape<n> {
             std::cout << "_ P4 _ " << std::endl;
             bl.print();
         }
+        virtual std::string fprint() const;
         void zoom(int percent);
+        void rotate(int degrees);
 };
 
 #include "Square.cpp"

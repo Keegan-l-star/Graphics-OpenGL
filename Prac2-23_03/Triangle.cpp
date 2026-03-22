@@ -6,11 +6,17 @@ Triangle<n>::Triangle(const Vector<n>& p1, const Vector<n>& p2, const Vector<n>&
     this->p3=p3;
 }
 
+
 template<int n>
 Triangle<n>::Triangle(const Triangle<n> &t){
     this->p1 = t.p1;
     this->p2 = t.p2;
     this->p3 = t.p3;
+        {
+            float* c = t.getColour();
+            for (int i = 0; i < 4; ++i) this->colour[i] = c[i];
+            delete[] c;
+        }
 }
 
 template<int n>
@@ -71,8 +77,44 @@ int Triangle<n>::getNumPoints() const{
 template<int n>
 void Triangle<n>::zoom(int percent){
     float factor = percent / 100.0f;
-    p1 = p1 * factor;
-    p2 = p2 * factor;
-    p3 = p3 * factor;
+    // compute centroid
+    Vector<n> center;
+    for (int i = 0; i < n; ++i) {
+        center[i] = (p1[i] + p2[i] + p3[i]) / 3.0f;
+    }
+
+    // translate to origin, scale, translate back
+    *this *= translation<n>(-center[0], -center[1], 0.0f);
+    *this *= scaling<n>(factor);
+    *this *= translation<n>(center[0], center[1], 0.0f);
+}
+
+template<int n>
+void Triangle<n>::rotate(int degrees){
+    // compute centroid
+    Vector<n> center;
+    for (int i = 0; i < n; ++i) {
+        center[i] = (p1[i] + p2[i] + p3[i]) / 3.0f;
+    }
+
+    // rotate about centroid: translate -> rotate -> translate back
+    *this *= translation<n>(-center[0], -center[1], 0.0f);
+    *this *= rotz<n>(degrees);
+    *this *= translation<n>(center[0], center[1], 0.0f);
+}
+
+template<int n>
+std::string Triangle<n>::fprint() const {
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(6);
+    float* pts = getPoints();
+    for (int i = 0; i < 9; ++i) ss << pts[i] << ' ';
+    delete[] pts;
+
+    int r = (int)roundf(this->colour[0]*255.0f);
+    int g = (int)roundf(this->colour[1]*255.0f);
+    int b = (int)roundf(this->colour[2]*255.0f);
+    ss << r << ' ' << g << ' ' << b << ' ' << this->colour[3];
+    return ss.str();
 }
 

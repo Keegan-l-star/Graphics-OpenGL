@@ -26,7 +26,7 @@ template<int n>
 Matrix<n,n> translation(float x,float y,float z);
 
 template<int n>
-Matrix<n,n> scaling(int m);
+Matrix<n,n> scaling(float m);
 
 #include "transformation.cpp"
 

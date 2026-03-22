@@ -11,8 +11,14 @@ run:
 	./main
 val:
 	valgrind ./main
-	
+
 all:
 	make clean
 	make
 	make run
+
+
+zip:
+	make clean
+	make
+	zip u24594522.zip *.h *.cpp makefile *.glsl

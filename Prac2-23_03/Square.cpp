@@ -1,4 +1,5 @@
 
+
 template <int n>
 Square<n>::Square(const Vector<n>& center, float height, float width){
     tl=Vector<n>(center);
@@ -29,6 +30,11 @@ Square<n>::Square(const Square<n> &two){
     this->tr=two.tr;
     this->br=two.br;
     this->bl=two.bl;
+        {
+            float* c = two.getColour();
+            for (int i = 0; i < 4; ++i) this->colour[i] = c[i];
+            delete[] c;
+        }
 }
 
 template <int n>
@@ -97,8 +103,42 @@ int Square<n>::getNumPoints() const{
 template<int n>
 void Square<n>::zoom(int percent){
     float factor = percent / 100.0f;
-    tl = tl * factor;
-    tr = tr * factor;
-    br = br * factor;
-    bl = bl * factor;
+    // compute centroid
+    Vector<n> center;
+    for (int i = 0; i < n; ++i) {
+        center[i] = (tl[i] + tr[i] + br[i] + bl[i]) / 4.0f;
+    }
+
+    // translate to origin, scale, translate back
+    *this *= translation<n>(-center[0], -center[1], 0.0f);
+    *this *= scaling<n>(factor);
+    *this *= translation<n>(center[0], center[1], 0.0f);
+}
+
+template<int n>
+void Square<n>::rotate(int degrees){
+    // compute centroid
+    Vector<n> center;
+    for (int i = 0; i < n; ++i) {
+        center[i] = (tl[i] + tr[i] + br[i] + bl[i]) / 4.0f;
+    }
+
+    // rotate about centroid: translate -> rotate -> translate back
+    *this *= translation<n>(-center[0], -center[1], 0.0f);
+    *this *= rotz<n>(degrees);
+    *this *= translation<n>(center[0], center[1], 0.0f);
+}
+
+template<int n>
+std::string Square<n>::fprint() const {
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(6);
+    float* pts = getPoints();
+    for (int i = 0; i < 12; ++i) ss << pts[i] << ' ';
+    delete[] pts;
+    int r = (int)roundf(this->colour[0]*255.0f);
+    int g = (int)roundf(this->colour[1]*255.0f);
+    int b = (int)roundf(this->colour[2]*255.0f);
+    ss << r << ' ' << g << ' ' << b << ' ' << this->colour[3];
+    return ss.str();
 }
