@@ -39,7 +39,7 @@ public:
     virtual void zoom(int percent);
     virtual void rotate(int degrees);
     virtual std::string fprint() const;
-    void setColour(int r, int g, int b, float a);
+    void setColour(int r, int g, int b, float a=1.0f);
 };
 
 #include "SquarePyramid.cpp"

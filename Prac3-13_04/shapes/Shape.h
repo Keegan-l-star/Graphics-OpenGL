@@ -24,7 +24,7 @@ class Shape{
         virtual int getNumPoints() const =0;
         virtual void print() const =0;
         virtual std::string fprint() const = 0;
-        virtual void setColour(int r, int g, int b, float a);
+        virtual void setColour(int r, int g, int b, float a=1.0f);
         float* getColour() const;
         virtual void zoom(int percent)=0;
         virtual void rotate(int degrees)=0;

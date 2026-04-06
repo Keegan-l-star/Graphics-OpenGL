@@ -40,7 +40,7 @@ class Cube: public Shape<n> {
         virtual void draw(bool wireframe = false) override;
         virtual void createGLBuffers(GLenum usage = GL_STATIC_DRAW) override;
         virtual void updateGLBuffers(GLenum usage = GL_DYNAMIC_DRAW) override;
-        void setColour(int r, int g, int b, float a);
+        void setColour(int r, int g, int b, float a=1.0f);
 };
 
 #include "Cube.cpp"

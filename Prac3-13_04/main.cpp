@@ -375,6 +375,66 @@ int main()
 
     Cube<4> barrrierL(barriersLC,barriersLF);
 
+    float newZ=centreZ+dif2;
+
+    Square<4> barriersLRC(
+        {bottomgrassORx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TL
+        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TR
+        {bottomgrassIRx,bottomgrassy,newZ+dif2,1.0f},///BR
+        {bottomgrassORx,bottomgrassy,newZ+dif2,1.0f}//BL
+        
+    );
+
+    Square<4> barriersLRF(
+        {bottomgrassORx,bottomgrassy+0.35f,newZ,1.0f},//TL
+        {bottomgrassIRx,bottomgrassy+0.35f,newZ,1.0f},//TR
+        {bottomgrassIRx,bottomgrassy,newZ,1.0f},///BR
+        {bottomgrassORx,bottomgrassy,newZ,1.0f}//BL
+        
+    );
+
+    Cube<4> barrrierLR(barriersLRC,barriersLRF);
+
+    Square<4> barriersRRC(
+        {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,newZ+dif2,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy,newZ+dif2,1.0f}//BL
+        
+    );
+
+    Square<4> barriersRRF(
+        {-bottomgrassORx,bottomgrassy+0.35f,newZ,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.35f,newZ,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,newZ,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy,newZ,1.0f}//BL
+        
+    );
+
+    Cube<4> barrrierRR(barriersRRC,barriersRRF);
+
+
+    Square<4> barriersOC(
+        {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TL
+        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TR
+        {bottomgrassIRx,bottomgrassy,newZ+dif2,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy,newZ+dif2,1.0f}//BL
+        
+    );
+
+    Square<4> barriersOF(
+        {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},//TL
+        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},//TR
+        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f}//BL
+        
+    );
+
+    Cube<4> barrriersO(barriersOF,barriersOC);
+
+
+
+
     Square<4> barriersRC(
         {-bottomgrassORx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
         {-bottomgrassIRx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
@@ -393,22 +453,27 @@ int main()
 
     Cube<4> barrrierR(barriersRC,barriersRF);
 
-    Square<4> bgf(
-        {bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},//TL
-        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},//TR
-        {-bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f},///BR
-        {bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f}//BL
-        
+    Square<4> sgf(
+        {bottomgrassIRx,bottomgrassy+0.45f,newZ+dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.45f,newZ+dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,newZ+dif2,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy,newZ+dif2,1.0f}//BL
     );
 
-    Square<4> bgc(
-        {bottomgrassIRx,bottomgrassy+0.2f,centreZ+dif2,1.0f},//TL
-        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ+dif2,1.0f},//TR
-        {-bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
-        {bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f}//BL
+    Square<4> sgc(
+        {bottomgrassIRx,bottomgrassy+0.2f,newZ,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.2f,newZ,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,newZ,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy,newZ,1.0f}//BL
     );
 
-    Cube<4> bGrass(bgc,bgf);
+    Cube<4> sGrass(sgc,sgf);
+
+    Vector<4> h1={0, bottomgrassy+0.21f, centreZ+dif2-0.1f, 1.0f};
+    Vector<4> h2={0, bottomgrassy+0.12f, centreZ+dif2-0.1f, 1.0f};
+    Cylinder<4> hole = Cylinder(h1,h2, 0.04f,9);
+    hole.setColour(50, 50, 54, 1.0f);
+    hole.createGLBuffers();
 
     Square<4> mtc(
         {bottomgrassIRx,bottomgrassy+0.210f,centreZ-dif2,1.0f},//TL
@@ -607,7 +672,7 @@ int main()
     );
 
     Cube<4> wmB5(wmBF5,wmBB5);
-    std::cout<<"The top y: "<<theYT<<" The top x "<<theXT<<std::endl;
+    // std::cout<<"The top y: "<<theYT<<" The top x "<<theXT<<std::endl;
 
     Sphere<4> ball({0.0f, -0.565f,centreZ-dif2+0.1f}, 0.025f,6, 8);
 
@@ -628,9 +693,22 @@ int main()
     Vector<4> TriApex{0.0f,theYT+0.5f,apexZ,1.0f};
 
     SquarePyramid<4> roof(base,TriApex);
-    // roof.setColour(100,100,0, 1.0f);
-    // Shape3D display(&roof);
-    // scene.push_back(&display);
+
+     Square<4> bgf(
+        {bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f}//BL
+    );
+
+    Square<4> bgc(
+        {bottomgrassIRx,bottomgrassy+0.2f,centreZ+dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ+dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f}//BL
+    );
+
+    Cube<4> bGrass(bgc,bgf);
 
 
 
@@ -650,17 +728,22 @@ int main()
 
     Figure barriers=Figure();
     barriers.addShape(&barrrierL);
+    barriers.addShape(&barrrierLR);
     barriers.addShape(&barrrierR);
+    barriers.addShape(&barrrierRR);
+    barriers.addShape(&barrriersO);
 
     barriers.setShapeColour(160,80,30,1.0f);
     barriers.addShape(&ob1);
-     barriers.addShape(&ob2);
+    barriers.addShape(&ob2);
 
     Figure grass=Figure();
     grass.addShape(&bGrass);
+    grass.addShape(&sGrass);
 
     grass.setShapeColour(0,204,0,1.0f);
     grass.addShape(&mat);
+    grass.addShape(&hole);
 
 
     Figure windmill=Figure();
