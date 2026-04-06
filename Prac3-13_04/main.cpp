@@ -755,6 +755,62 @@ int main()
     Cube<4> LPot(LPF,LPC);
     LPot.setColour(140, 87, 34);
 
+    Square<4> LLC(
+        {bottomgrassORx-0.35f+0.015F,bottomgrassy+0.60f,centreZ-dif2+0.01F,1.0f},//TL
+        {bottomgrassORx-0.015F,bottomgrassy+0.60f,centreZ-dif2+0.01F,1.0f},//TR
+        {bottomgrassORx-0.015F,bottomgrassy+0.35f,centreZ-dif2+0.01F,1.0f},///BR
+        {bottomgrassORx-0.35f+0.015F,bottomgrassy+0.35f,centreZ-dif2+0.01F,1.0f}//BL
+        
+    );
+
+    Square<4> LLF(
+        {bottomgrassORx-0.35f+0.015F,bottomgrassy+0.60f,centreZ+dif2-0.01F,1.0f},//TL
+        {bottomgrassORx-0.015F,bottomgrassy+0.60f,centreZ+dif2-0.01F,1.0f},//TR
+        {bottomgrassORx-0.015F,bottomgrassy+0.35f,centreZ+dif2-0.01F,1.0f},///BR
+        {bottomgrassORx-0.35f+0.015F,bottomgrassy+0.35f,centreZ+dif2-0.01F,1.0f}//BL
+        
+    );
+
+    Cube<4> LLeaf(LLF,LLC);
+    LLeaf.setColour(3, 92, 15);
+
+    Square<4> RLC(
+        {-(bottomgrassORx-0.35f+0.015F),bottomgrassy+0.60f,centreZ-dif2+0.01F,1.0f},//TL
+        {-(bottomgrassORx-0.015F),bottomgrassy+0.60f,centreZ-dif2+0.01F,1.0f},//TR
+        {-(bottomgrassORx-0.015F),bottomgrassy+0.35f,centreZ-dif2+0.01F,1.0f},///BR
+        {-(bottomgrassORx-0.35f+0.015F),bottomgrassy+0.35f,centreZ-dif2+0.01F,1.0f}//BL
+    );
+
+    Square<4> RLF(
+        {-(bottomgrassORx-0.35f+0.015F),bottomgrassy+0.60f,centreZ+dif2-0.01F,1.0f},//TL
+        {-(bottomgrassORx-0.015F),bottomgrassy+0.60f,centreZ+dif2-0.01F,1.0f},//TR
+        {-(bottomgrassORx-0.015F),bottomgrassy+0.35f,centreZ+dif2-0.01F,1.0f},///BR
+        {-(bottomgrassORx-0.35f+0.015F),bottomgrassy+0.35f,centreZ+dif2-0.01F,1.0f}//BL
+        
+    );
+
+    Cube<4> RLeaf(RLF,RLC);
+    RLeaf.setColour(3, 92, 15);
+
+    Square<4> RPC(
+        {-(bottomgrassORx-0.35f),bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
+        {-(bottomgrassORx),bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
+        {-(bottomgrassORx),bottomgrassy,centreZ-dif2,1.0f},///BR
+        {-(bottomgrassORx-0.35f),bottomgrassy,centreZ-dif2,1.0f}//BL
+        
+    );
+
+    Square<4> RPF(
+        {-(bottomgrassORx-0.35f),bottomgrassy+0.35f,centreZ+dif2,1.0f},//TL
+        {-(bottomgrassORx),bottomgrassy+0.35f,centreZ+dif2,1.0f},//TR
+        {-(bottomgrassORx),bottomgrassy,centreZ+dif2,1.0f},///BR
+        {-(bottomgrassORx-0.35f),bottomgrassy,centreZ+dif2,1.0f}//BL
+        
+    );
+
+    Cube<4> RPot(RPF,RPC);
+    RPot.setColour(140, 87, 34);
+
 
 
     Figure blades=Figure();
@@ -809,7 +865,9 @@ int main()
 
     Figure decor=Figure();
     decor.addShape(&LPot);
-
+    decor.addShape(&RPot);
+    decor.addShape(&LLeaf);
+    decor.addShape(&RLeaf);
 
     
     scene.push_back(&golfBall);
