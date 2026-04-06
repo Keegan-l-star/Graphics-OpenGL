@@ -416,17 +416,17 @@ int main()
 
     Square<4> barriersOC(
         {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TL
-        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TR
-        {bottomgrassIRx,bottomgrassy,newZ+dif2,1.0f},///BR
+        {bottomgrassORx,bottomgrassy+0.6f,newZ+dif2,1.0f},//TR
+        {bottomgrassORx,bottomgrassy,newZ+dif2,1.0f},///BR
         {-bottomgrassORx,bottomgrassy,newZ+dif2,1.0f}//BL
         
     );
 
     Square<4> barriersOF(
         {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},//TL
-        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},//TR
-        {bottomgrassIRx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},///BR
-        {-bottomgrassORx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f}//BL
+        {bottomgrassORx,bottomgrassy+0.6f,newZ+dif2+0.35f,1.0f},//TR
+        {bottomgrassORx,bottomgrassy,newZ+dif2+0.35f,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy,newZ+dif2+0.35f,1.0f}//BL
         
     );
 
@@ -452,6 +452,27 @@ int main()
     );
 
     Cube<4> barrrierR(barriersRC,barriersRF);
+
+
+    // Square<4> LPC(
+    //     {-bottomgrassORx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
+    //     {-bottomgrassIRx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
+    //     {-bottomgrassIRx,bottomgrassy,centreZ-0.3f,1.0f},///BR
+    //     {-bottomgrassORx,bottomgrassy,centreZ-0,1.0f}//BL
+        
+    // );
+
+    // Square<4> LPF(
+    //     {-bottomgrassORx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TL
+    //     {-bottomgrassIRx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TR
+    //     {-bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
+    //     {-bottomgrassORx,bottomgrassy,centreZ+dif2,1.0f}//BL
+        
+    // );
+
+    // Cube<4> LPot(LPF,LPC);
+    
+
 
     Square<4> sgf(
         {bottomgrassIRx,bottomgrassy+0.45f,newZ+dif2,1.0f},//TL
@@ -711,6 +732,30 @@ int main()
     Cube<4> bGrass(bgc,bgf);
 
 
+    dif2=0.3f;
+
+    bottomgrassORx-=0.15f;
+
+    Square<4> LPC(
+        {bottomgrassORx-0.35f,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
+        {bottomgrassORx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
+        {bottomgrassORx,bottomgrassy,centreZ-dif2,1.0f},///BR
+        {bottomgrassORx-0.35f,bottomgrassy,centreZ-dif2,1.0f}//BL
+        
+    );
+
+    Square<4> LPF(
+        {bottomgrassORx-0.35f,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TL
+        {bottomgrassORx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TR
+        {bottomgrassORx,bottomgrassy,centreZ+dif2,1.0f},///BR
+        {bottomgrassORx-0.35f,bottomgrassy,centreZ+dif2,1.0f}//BL
+        
+    );
+
+    Cube<4> LPot(LPF,LPC);
+    LPot.setColour(140, 87, 34);
+
+
 
     Figure blades=Figure();
     blades.setRotationAxis(alignedx,alignedy,(centreZ+0.05f),alignedx,alignedy, (centreZ-0.05f));
@@ -762,11 +807,17 @@ int main()
     ball.setColour(255,255,255,1.0f);
     Shape3D golfBall(&ball);
 
+    Figure decor=Figure();
+    decor.addShape(&LPot);
+
+
+    
     scene.push_back(&golfBall);
     scene.push_back(&grass);
     scene.push_back(&barriers);
     scene.push_back(&blades);
     scene.push_back(&windmill);
+    scene.push_back(&decor);
     
 
 
