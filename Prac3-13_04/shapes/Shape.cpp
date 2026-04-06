@@ -75,6 +75,14 @@ void Shape<n>::createGLBuffers(GLenum usage){
 
     float* pts = getPoints();
     int numFloats = getNumPoints();
+    // Validate vertex data for NaN/Inf to catch corrupt transforms early
+    for (int i = 0; i < numFloats; ++i) {
+        if (!std::isfinite(pts[i])) {
+            std::cerr << "Shape::createGLBuffers(): invalid vertex data (NaN/Inf) at index " << i << "\n";
+            delete[] pts;
+            return;
+        }
+    }
     int verts = 0;
     if (n > 0) verts = numFloats / n;
 
@@ -95,6 +103,14 @@ void Shape<n>::updateGLBuffers(GLenum usage){
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     float* pts = getPoints();
     int numFloats = getNumPoints();
+    // Validate vertex data before uploading
+    for (int i = 0; i < numFloats; ++i) {
+        if (!std::isfinite(pts[i])) {
+            std::cerr << "Shape::updateGLBuffers(): invalid vertex data (NaN/Inf) at index " << i << "\n";
+            delete[] pts;
+            return;
+        }
+    }
     glBufferData(GL_ARRAY_BUFFER, numFloats * sizeof(float), nullptr, usage);
     glBufferSubData(GL_ARRAY_BUFFER, 0, numFloats * sizeof(float), pts);
     delete[] pts;

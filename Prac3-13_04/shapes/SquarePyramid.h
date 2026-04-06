@@ -15,8 +15,8 @@
 template <int n>
 class SquarePyramid : public Shape<n> {
 private:
-    Square<n>* base;
-    Triangle<n>* sides[4];
+    Square<n> base;
+    Triangle<n> sides[4];
 
 public:
     SquarePyramid();
@@ -32,12 +32,14 @@ public:
     virtual int getNumPoints() const;
     virtual void draw(bool wireframe = false);
     virtual void createGLBuffers(GLenum usage = GL_STATIC_DRAW);
+    virtual void updateGLBuffers(GLenum usage = GL_DYNAMIC_DRAW);
     virtual GLenum glDrawMode() const;
     
     virtual void print() const;
     virtual void zoom(int percent);
     virtual void rotate(int degrees);
     virtual std::string fprint() const;
+    void setColour(int r, int g, int b, float a);
 };
 
 #include "SquarePyramid.cpp"

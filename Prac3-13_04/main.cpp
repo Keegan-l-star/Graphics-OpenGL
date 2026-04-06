@@ -18,8 +18,11 @@
 #include "shapes/Cylinder.h"
 #include "shapes/Circle.h"
 #include "shapes/Cone.h"
+#include "shapes/TriangularPrism.h"
 #include "shapes/Vector.h"
 #include "shapes/transformation.h"
+#include "shapes/SquarePyramid.h"
+#include "shapes/Sphere.h"
 
 
 #include "Figure.h"
@@ -37,7 +40,7 @@ void key_listener(GLFWwindow* window, int key, int scancode, int action, int mod
     const float MOVE_STEP = 0.05f;
     if(key==GLFW_KEY_ENTER && action==GLFW_PRESS){
         wireframeMode=!wireframeMode;
-        std::cout<<"Enter was pressed"<<std::endl;
+        //std::cout<<"Enter was pressed"<<std::endl;
     } else if((key == GLFW_KEY_KP_ADD || (key == GLFW_KEY_EQUAL && (mods & GLFW_MOD_SHIFT))) && action==GLFW_PRESS){
         rotationSpeed++;
     } else if((key == GLFW_KEY_KP_SUBTRACT || key == GLFW_KEY_MINUS ) && action==GLFW_PRESS){
@@ -205,9 +208,9 @@ int main()
     float sailTLx=0.38f;
     float sailTLy=sailTLx+0.02f;
 
-    float sail2TLx=-0.4f;
+    float sail2TLx=-0.38f;
     float sail2TLy=-(sail2TLx)-0.02f;
-
+        //
     Vector<4> startTL={sailTLx, sailTLy, centreZ,1.0f};
     Vector<4> startTR={sailTLy, sailTLx, centreZ,1.0f};
     Vector<4> startBL={-sailTLy, -sailTLx, centreZ,1.0f};
@@ -350,6 +353,287 @@ int main()
     sailD.setColour(200, 66, 40, 1.0f);
     sailD.createGLBuffers();
 
+    float bottomgrassIRx=-0.7f;
+    float bottomgrassORx=-0.8f;
+    float bottomgrassy=-0.8f;
+    float dif2=0.8f;
+    Square<4> barriersLC(
+        {bottomgrassORx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
+        {bottomgrassIRx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
+        {bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f},///BR
+        {bottomgrassORx,bottomgrassy,centreZ-dif2,1.0f}//BL
+        
+    );
+
+    Square<4> barriersLF(
+        {bottomgrassORx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TL
+        {bottomgrassIRx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TR
+        {bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
+        {bottomgrassORx,bottomgrassy,centreZ+dif2,1.0f}//BL
+        
+    );
+
+    Cube<4> barrrierL(barriersLC,barriersLF);
+
+    Square<4> barriersRC(
+        {-bottomgrassORx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy,centreZ-dif2,1.0f}//BL
+        
+    );
+
+    Square<4> barriersRF(
+        {-bottomgrassORx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
+        {-bottomgrassORx,bottomgrassy,centreZ+dif2,1.0f}//BL
+        
+    );
+
+    Cube<4> barrrierR(barriersRC,barriersRF);
+
+    Square<4> bgf(
+        {bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy,centreZ-dif2,1.0f}//BL
+        
+    );
+
+    Square<4> bgc(
+        {bottomgrassIRx,bottomgrassy+0.2f,centreZ+dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ+dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f}//BL
+    );
+
+    Cube<4> bGrass(bgc,bgf);
+
+    Square<4> mtc(
+        {bottomgrassIRx,bottomgrassy+0.210f,centreZ-dif2,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.210f,centreZ-dif2,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2,1.0f}//BL
+    );
+
+    Square<4> mtf(
+        {bottomgrassIRx,bottomgrassy+0.210f,centreZ-dif2+0.3f,1.0f},//TL
+        {-bottomgrassIRx,bottomgrassy+0.210f,centreZ-dif2+0.3f,1.0f},//TR
+        {-bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2+0.3f,1.0f},///BR
+        {bottomgrassIRx,bottomgrassy+0.2f,centreZ-dif2+0.3f,1.0f}//BL
+    );
+
+    Cube<4> mat(mtc,mtf);
+
+    mat.setColour(76,153,0,1.0f);
+
+    float startObZ=centreZ-dif2+0.3f+0.1f;
+    float offset=0.05f;
+    float len=0.025f;
+
+    Square<4> ob1c(
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.25f,startObZ+offset+len,1.0f},//TL
+        {(-bottomgrassIRx),bottomgrassy+0.25f,startObZ+len,1.0f},//TR
+        {(-bottomgrassIRx),bottomgrassy+0.2f,startObZ+len,1.0f},///BR
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.2f,startObZ+offset+len,1.0f}//BL
+    );
+
+    Square<4> ob1f(
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.25f,startObZ+offset,1.0f},//TL
+        {(-bottomgrassIRx),bottomgrassy+0.25f,startObZ,1.0f},//TR
+        {(-bottomgrassIRx),bottomgrassy+0.2f,startObZ,1.0f},///BR
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.2f,startObZ+offset,1.0f}//BL
+    );
+
+    Cube<4> ob1(ob1c,ob1f);
+
+    ob1.setColour(255,255,255,1.0f);
+
+    Square<4> ob2c(
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.25f,startObZ+offset+len,1.0f},//TL
+        {(-bottomgrassIRx),bottomgrassy+0.25f,startObZ+2*len+2*offset,1.0f},//TR
+        {(-bottomgrassIRx),bottomgrassy+0.2f,startObZ+2*len+2*offset,1.0f},///BR
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.2f,startObZ+offset+len,1.0f}//BL
+    );
+
+    Square<4> ob2f(
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.25f,startObZ+offset+len+len,1.0f},//TL
+        {(-bottomgrassIRx),bottomgrassy+0.25f,startObZ+2*len+2*offset+len,1.0f},//TR
+        {(-bottomgrassIRx),bottomgrassy+0.2f,startObZ+2*len+2*offset+len,1.0f},///BR
+        {(-bottomgrassIRx)-0.2f,bottomgrassy+0.2f,startObZ+offset+len+len,1.0f}//BL
+    );
+
+    Cube<4> ob2(ob2c,ob2f);
+
+    ob2.setColour(255,255,255,1.0f);
+
+    float wmf=centreZ+0.075f;
+    float wmb=wmf+0.255f;
+
+    Square<4> legLC(
+        {bottomgrassIRx+0.1f,bottomgrassy+0.35f,wmf,1.0f},
+        {bottomgrassIRx+0.25f,bottomgrassy+0.35f,wmf,1.0f},
+        {bottomgrassIRx+0.25f,bottomgrassy+0.2f,wmf,1.0f},
+        {bottomgrassIRx+0.1f,bottomgrassy+0.2f,wmf,1.0f}
+    );
+
+    Square<4> legLF(
+        {bottomgrassIRx+0.1f,bottomgrassy+0.35f,wmb,1.0f},
+        {bottomgrassIRx+0.25f,bottomgrassy+0.35f,wmb,1.0f},
+        {bottomgrassIRx+0.25f,bottomgrassy+0.2f,wmb,1.0f},
+        {bottomgrassIRx+0.1f,bottomgrassy+0.2f,wmb,1.0f}
+    );
+
+    Cube<4> legL(legLC,legLF);
+
+    Square<4> legRC(
+        {-(bottomgrassIRx+0.1f),bottomgrassy+0.35f,wmf,1.0f},
+        {-(bottomgrassIRx+0.25f),bottomgrassy+0.35f,wmf,1.0f},
+        {-(bottomgrassIRx+0.25f),bottomgrassy+0.2f,wmf,1.0f},
+        {-(bottomgrassIRx+0.1f),bottomgrassy+0.2f,wmf,1.0f}
+    );
+
+    Square<4> legRF(
+        {-(bottomgrassIRx+0.1f),bottomgrassy+0.35f,wmb,1.0f},
+        {-(bottomgrassIRx+0.25f),bottomgrassy+0.35f,wmb,1.0f},
+        {-(bottomgrassIRx+0.25f),bottomgrassy+0.2f,wmb,1.0f},
+        {-(bottomgrassIRx+0.1f),bottomgrassy+0.2f,wmb,1.0f}
+    );
+
+    Cube<4> legR(legRC,legRF);
+    float theXB=bottomgrassIRx+0.05f;
+    float theXT=theXB+0.1f;
+    float theYB=bottomgrassy+0.35f;
+    float theYT=bottomgrassy+0.5f;
+    float diff=theYT-theYB;
+    float diffx=theXT-theXB;
+    Square<4> wmBF1(
+        {theXT,theYT,wmf,1.0f},
+        {-theXT,theYT,wmf,1.0f},
+        {-(theXB),theYB,wmf,1.0f},
+        {theXB,theYB,wmf,1.0f}
+    );
+
+    Square<4> wmBB1(
+        {theXT,theYT,wmb,1.0f},
+        {-theXT,theYT,wmb,1.0f},
+        {-theXB,theYB,wmb,1.0f},
+        {theXB,theYB,wmb,1.0f}
+    );
+
+    Cube<4> wmB1(wmBF1,wmBB1);
+
+    theYB=theYT;
+    theYT+=diff;
+    theXB=theXT+0.005f;
+    theXT=theXB+diffx;
+
+    Square<4> wmBF2(
+        {theXT,theYT,wmf,1.0f},
+        {-theXT,theYT,wmf,1.0f},
+        {-(theXB),theYB,wmf,1.0f},
+        {theXB,theYB,wmf,1.0f}
+    );
+
+    Square<4> wmBB2(
+        {theXT,theYT,wmb,1.0f},
+        {-theXT,theYT,wmb,1.0f},
+        {-theXB,theYB,wmb,1.0f},
+        {theXB,theYB,wmb,1.0f}
+    );
+
+    Cube<4> wmB2(wmBF2,wmBB2);
+
+    theYB=theYT;
+    theYT+=diff;
+    theXB=theXT+0.005f;
+    theXT=theXB+diffx;
+
+    Square<4> wmBF3(
+        {theXT,theYT,wmf,1.0f},
+        {-theXT,theYT,wmf,1.0f},
+        {-(theXB),theYB,wmf,1.0f},
+        {theXB,theYB,wmf,1.0f}
+    );
+
+    Square<4> wmBB3(
+        {theXT,theYT,wmb,1.0f},
+        {-theXT,theYT,wmb,1.0f},
+        {-theXB,theYB,wmb,1.0f},
+        {theXB,theYB,wmb,1.0f}
+    );
+
+    Cube<4> wmB3(wmBF3,wmBB3);
+
+    theYB=theYT;
+    theYT+=diff;
+    theXB=theXT+0.005f;
+    theXT=theXB+diffx;
+
+    Square<4> wmBF4(
+        {theXT,theYT,wmf,1.0f},
+        {-theXT,theYT,wmf,1.0f},
+        {-(theXB),theYB,wmf,1.0f},
+        {theXB,theYB,wmf,1.0f}
+    );
+
+    Square<4> wmBB4(
+        {theXT,theYT,wmb,1.0f},
+        {-theXT,theYT,wmb,1.0f},
+        {-theXB,theYB,wmb,1.0f},
+        {theXB,theYB,wmb,1.0f}
+    );
+
+    Cube<4> wmB4(wmBF4,wmBB4);
+
+    theYB=theYT;
+    theYT+=diff+0.15f;
+    theXB=theXT+0.005f;
+    theXT=theXB;
+
+    Square<4> wmBF5(
+        {theXT,theYT,wmf,1.0f},
+        {-theXT,theYT,wmf,1.0f},
+        {-(theXB),theYB,wmf,1.0f},
+        {theXB,theYB,wmf,1.0f}
+    );
+
+    Square<4> wmBB5(
+        {theXT,theYT,wmb,1.0f},
+        {-theXT,theYT,wmb,1.0f},
+        {-theXB,theYB,wmb,1.0f},
+        {theXB,theYB,wmb,1.0f}
+    );
+
+    Cube<4> wmB5(wmBF5,wmBB5);
+    std::cout<<"The top y: "<<theYT<<" The top x "<<theXT<<std::endl;
+
+    Sphere<4> ball({0.0f, -0.565f,centreZ-dif2+0.1f}, 0.025f,6, 8);
+
+    theXT-=0.001f;
+    Square<4> base(
+
+    
+    {-theXT,theYT,wmf,1.0f},
+    
+    {theXT,theYT,wmf,1.0f},
+    {theXT,theYT,wmb,1.0f},
+    {-theXT,theYT,wmb,1.0f}
+    
+    );
+    float apexZ=(wmb+wmf)/2;
+
+
+    Vector<4> TriApex{0.0f,theYT+0.5f,apexZ,1.0f};
+
+    SquarePyramid<4> roof(base,TriApex);
+    // roof.setColour(100,100,0, 1.0f);
+    // Shape3D display(&roof);
+    // scene.push_back(&display);
+
+
+
     Figure blades=Figure();
     blades.setRotationAxis(alignedx,alignedy,(centreZ+0.05f),alignedx,alignedy, (centreZ-0.05f));
     blades.addShape(&sailD);
@@ -359,12 +643,48 @@ int main()
     blades.setShapeColour(120,120,120, 1.0f );
     blades.addShape(&rotorArm2);
     blades.addShape(&first);
-    
     blades.addShape(&cone);
     blades.addShape(&rotor);
 
-    
+    blades.move( 0.0f,0.275f, 0.0f);
+
+    Figure barriers=Figure();
+    barriers.addShape(&barrrierL);
+    barriers.addShape(&barrrierR);
+
+    barriers.setShapeColour(160,80,30,1.0f);
+    barriers.addShape(&ob1);
+     barriers.addShape(&ob2);
+
+    Figure grass=Figure();
+    grass.addShape(&bGrass);
+
+    grass.setShapeColour(0,204,0,1.0f);
+    grass.addShape(&mat);
+
+
+    Figure windmill=Figure();
+    windmill.addShape(&legL);
+    windmill.addShape(&legR);
+    windmill.addShape(&wmB1);
+    windmill.addShape(&wmB2);
+    windmill.addShape(&wmB3);
+    windmill.addShape(&wmB4);
+    windmill.addShape(&wmB5);
+    windmill.addShape(&roof);
+
+    windmill.setShapeColour(153,0,0,1.0f);
+
+
+    ball.setColour(255,255,255,1.0f);
+    Shape3D golfBall(&ball);
+
+    scene.push_back(&golfBall);
+    scene.push_back(&grass);
+    scene.push_back(&barriers);
     scene.push_back(&blades);
+    scene.push_back(&windmill);
+    
 
 
     glfwSetKeyCallback(window,key_listener);
