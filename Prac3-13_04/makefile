@@ -1,7 +1,7 @@
 #add all the files that you need to the files makefile variable below as a space seperated list
-files = 
+files = Figure.cpp Shape3D.cpp Object.cpp
 
-main: main.cpp shader.cpp
+main: main.cpp shader.cpp $(files)
 	g++ -g shader.cpp $(files) main.cpp -lglfw -pthread -lGLEW -ldl -lGL -o main
 
 clean:

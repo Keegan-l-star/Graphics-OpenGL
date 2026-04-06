@@ -1,0 +1,51 @@
+#ifndef SQUARE_H
+#define SQUARE_H
+
+#include <sstream>
+#include <iomanip>
+#include <cmath>
+
+#include "Shape.h"
+#include "Matrix.h"
+#include "Vector.h"
+#include "transformation.h"
+
+template <int n>
+class Square: public Shape<n> {
+    private:
+        Vector<n> tl;
+        Vector<n> tr;
+        Vector<n> br;
+        Vector<n> bl;
+    public:
+        Square();
+        Square(const Vector<n>& center, float height, float width);
+        Square(const Vector<n>& tl, const Vector<n>& tr, const Vector<n>& br, const Vector<n>& bl);
+        Square(const Square<n>&);
+        virtual Square<n>& operator*=(const Matrix<n,n>&);
+        virtual Square<n>* operator*(const Matrix<n,n>&) const;
+        virtual float* getPoints() const;
+        virtual int getNumPoints() const;
+
+        virtual void print() const{
+            std::cout << "_ P1 _ " << std::endl;
+            tl.print();
+            std::cout << "_ P2 _ " << std::endl;
+            tr.print();
+            std::cout << "_ P3 _ " <<std::endl;
+            br.print();
+            std::cout << "_ P4 _ " << std::endl;
+            bl.print();
+        }
+        virtual std::string fprint() const;
+        void zoom(int percent);
+        void rotate(int degrees);
+        // GL draw mode
+        virtual GLenum glDrawMode() const override;
+        virtual void draw(bool wireframe = false) override;
+        virtual void createGLBuffers(GLenum usage = GL_STATIC_DRAW) override;
+};
+
+#include "Square.cpp"
+
+#endif /*SQUARE_H*/
