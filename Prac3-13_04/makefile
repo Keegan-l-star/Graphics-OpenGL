@@ -21,4 +21,4 @@ all:
 zip:
 	make clean
 	make
-	zip u24594522.zip *.h *.cpp makefile *.glsl main README.md
+	zip u24594522.zip *.hpp *.h *.cpp makefile *.glsl main README.md referenceImage.jpg referenceImage1.jpg shapes
