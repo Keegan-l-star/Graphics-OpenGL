@@ -295,6 +295,7 @@ int main(int argc, char const *argv[])
 
     */
 
+    /*
     std::cout<<"=========Transformations and shaders========="<<std::endl;
     int angle=284;
     Vector<3> point{4,4,9};
@@ -437,8 +438,162 @@ int main(int argc, char const *argv[])
     translation[2][0] = 0; translation[2][1] = 0; translation[2][2] = 1; translation[2][3] = trans_z;
     translation[3][0] = 0; translation[3][1] = 0; translation[3][2] = 0; translation[3][3] = 1;
     translation.print();
+    */
 
     
+    double t=0;
+    double theta,n,f;
+    std::cout<<"\nWhat is theta?";
+    std::cin>>theta;
+    std::cout<<"\nWhat is n?";
+    std::cin>>n;
+    std::cout<<"\nWhat is the far plane?";
+    std::cin>>f;
+    t=n*tan((theta/2.0)*(M_PI/180.00));
+    t=round(t*100.00)/100.0;
+    std::cout<<"\nThe t:"<<t<<std::endl;
+    double width,height;
+    std::cout<<"\nEnter width?";
+    std::cin>>width;
+    std::cout<<"\nEnter height?";
+    std::cin>>height;
+    double r=t*(width/height);
+    std::cout<<"\nThe r: "<<r<<std::endl;
+    std::cout<<"\n The l: "<<-r<<std::endl;
+    std::cout<<"\n The b: "<<-t<<std::endl;
+    Matrix<4,4> Mp;
+    Mp[0][0]=n;  Mp[1][0]=0; Mp[2][0]=0; Mp[3][0]=0;
+    Mp[0][1]=0; Mp[1][1]=n; Mp[2][1]=0; Mp[3][1]=0;
+    Mp[0][2]=0; Mp[1][2]=0; Mp[2][2]=n+f; Mp[2][3]=-n*f;
+    Mp[0][3]=0; Mp[1][3]=0; Mp[3][2]=1; Mp[3][3]=0;
 
+    std::cout<<"\nPerspective Matrix: \n";
+    Mp.print();
+
+
+    Matrix<4,4> Mortho;
+    Mortho[0][0]=2/(r-(-r)); Mortho[1][0]=0; Mortho[2][0]=0; Mortho[3][0]=-(r+(-r))/(r-(-r));
+    Mortho[0][1]=0; Mortho[1][1]=2/(t-(-t)); Mortho[2][1]=0; Mortho[3][1]=-(t+(-t))/(t-(-t));
+    Mortho[0][2]=0; Mortho[1][2]=0; Mortho[2][2]=2/(n-f); Mortho[2][3]=-(n+f)/(n-f);
+    Mortho[0][3]=0; Mortho[1][0]=0; Mortho[3][2]=0; Mortho[3][3]=1;
+
+    std::cout<<"\nOrthographic Projection Matrix: \n";
+    Mortho.print();
+
+    Matrix<4,4> Mper;
+
+    Mper[0][0]=n/(r); Mper[1][0]=0; Mper[2][0]=0; Mper[3][0]=0;
+    Mper[0][1]=0; Mper[1][1]=n/t; Mper[2][1]=0; Mper[3][1]=0;
+    Mper[0][2]=0; Mper[1][2]=0; Mper[2][2]=(n+f)/(n-f); Mper[2][3]=2*n*f/(f-n);
+    Mper[0][3]=0; Mper[1][0]=0; Mper[3][2]=1; Mper[3][3]=0;
+
+
+    std::cout<<"\nPerspective Projection Matrix: \n";
+    Mper.print();
+    
+    /*
+    float scrw,scrh,w,h,d,z;
+    std::cout<<"\nThe screen resoultion width: ";
+    std::cin>>scrw;
+    std::cout<<"\nThe screen resoultion height: ";
+    std::cin>>scrh;
+    std::cout<<"\nView volume wide: ";
+    std::cin>>w;
+    std::cout<<"\nView volume high: ";
+    std::cin>>h;
+    std::cout<<"\nView volume deep: ";
+    std::cin>>d;
+    std::cout<<"\nThe view volume is centred at a distance of : ";
+    std::cin>>z;
+    float camx,camy,camz,upx,upy,upz;
+    std::cout<<"\ncamx :";
+    std::cin>>camx;
+    std::cout<<"\ncamy :";
+    std::cin>>camy;
+    std::cout<<"\ncamz :";
+    std::cin>>camz;
+    std::cout<<"\nupx ";
+    std::cin>>upx;
+    std::cout<<"\nupy: ";
+    std::cin>>upy;
+    std::cout<<"\nupz: ";
+    std::cin>>upz;
+
+    Vector<3> target={0,0,0};
+    Vector<3> e={camx,camy,camz};
+    Vector<3> worldUp={upx,upy,upz};
+
+    Vector<3> g = {target[0] - e[0], target[1] - e[1], target[2]- e[2]};
+    Vector<3> ng=g.unitVector();
+
+    std::cout<<"\n The Normalized g: \n";
+    ng.print();
+
+
+    Vector<3> w_vec = {-ng[0], -ng[1], -ng[2]};
+    std::cout<<"\n The Normalized w: \n";
+    w_vec.print();
+
+    Vector<3> u= worldUp.crossProduct(w_vec).unitVector();
+    std::cout<<"\n The Normalized u: \n";
+    u.print();
+    
+    Vector<3> v= w_vec.crossProduct(u);
+    std::cout<<"\n The Normalized v: \n";
+    v.print();
+
+    std::cout << "\nBasis vectors calculated.";
+
+    // 3. INVERSE CAMERA MATRIX (M_cam^-1)
+    Matrix<4,4> Mcam_inv;
+    // Rotation (Rows of Mcam_inv are the basis vectors u, v, w)
+    Mcam_inv[0][0] = u[0];   Mcam_inv[1][0] = u[1];   Mcam_inv[2][0] = u[2];
+    Mcam_inv[0][1] = v[0];   Mcam_inv[1][1] = v[1];   Mcam_inv[2][1] = v[2];
+    Mcam_inv[0][2] = w_vec[0]; Mcam_inv[1][2] = w_vec[1]; Mcam_inv[2][2] = w_vec[2];
+
+    // Translation (The dot product fix)
+    Mcam_inv[0][3] = -(u[0]*e[0] + u[1]*e[1] + u[2]*e[2]);     // -u · e
+    Mcam_inv[1][3] = -(v[0]*e[0] + v[1]*e[1] + v[2]*e[2]);     // -v · e
+    Mcam_inv[2][3] = -(w_vec[0]*e[0] + w_vec[1]*e[1] + w_vec[2]*e[2]); // -w · e
+
+    Mcam_inv[3][0] = 0; Mcam_inv[3][1] = 0; Mcam_inv[3][2] = 0; Mcam_inv[3][3] = 1;
+
+    // 4. VIEW VOLUME BOUNDS (l, r, t, b, n, f)
+    double r_val = w / 2.0;
+    double l_val = -r_val;
+    double t_val = h / 2.0;
+    double b_val = -t_val;
+    // n and f are distances along the -z axis
+    double n_val = -z + (d / 2.0); 
+    double f_val = -z - (d / 2.0);
+    
+
+    // 5. Orthographic Matrix
+    Matrix<4,4> Mortho;
+    Mortho[0][0] = 2.0 / (r_val - l_val);
+    Mortho[1][1] = 2.0 / (t_val - b_val);
+    Mortho[2][2] = 2.0 / (n_val - f_val);
+    Mortho[0][3] = -(r_val + l_val) / (r_val - l_val);
+    Mortho[1][3] = -(t_val + b_val) / (t_val - b_val);
+    Mortho[2][3] = -(n_val + f_val) / (n_val - f_val);
+    Mortho[3][3] = 1.0;
+
+
+
+    // 6. Viewport Matrix
+    Matrix<4,4> Mvp;
+    Mvp[0][0] = scrw / 2.0;
+    Mvp[1][1] = scrh / 2.0;
+    Mvp[2][2] = 1.0;
+    Mvp[0][3] = (scrw - 1.0) / 2.0;
+    Mvp[1][3] = (scrh - 1.0) / 2.0;
+    Mvp[3][3] = 1.0;
+
+    std::cout << "--- INVERSE CAMERA MATRIX ---\n"; Mcam_inv.print();
+    std::cout << "\nr: " << r_val << " l: " << l_val << " t: " << t_val << " b: " << b_val;
+    std::cout << "\nn: " << n_val << " f: " << f_val << "\n";
+    std::cout << "\n--- ORTHOGRAPHIC MATRIX ---\n"; Mortho.print();
+    std::cout << "\n--- VIEWPORT MATRIX ---\n"; Mvp.print();
+    */
     return 0;
 }

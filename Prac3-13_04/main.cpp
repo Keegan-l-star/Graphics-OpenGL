@@ -138,7 +138,7 @@ inline GLFWwindow *setUp()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
     GLFWwindow *window;                                            // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(1000, 1000, "Experiment", NULL, NULL);
+    window = glfwCreateWindow(1000, 1000, "u24594522", NULL, NULL);
     if (window == NULL)
     {
         cout << getError() << endl;
@@ -197,8 +197,6 @@ int main()
 
     // Creation of the cone - rotor end
     Vector<4> apex1={alignedx,alignedy, (centreZ-0.045f), 1.0f};
-    //Vector<4> bc1={-0.3,-0.4f,0.45f,1.0f}; This is now just thec1 so I don't have to make changes a lot
-    //Cone(apex,baseCenter,radius,resolution = 32);
     Cone<4> cone={apex1, c1, rotorR, 9};
     cone.setColour(0,0,100, 1.0f);
     cone.createGLBuffers();
@@ -452,27 +450,6 @@ int main()
     );
 
     Cube<4> barrrierR(barriersRC,barriersRF);
-
-
-    // Square<4> LPC(
-    //     {-bottomgrassORx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TL
-    //     {-bottomgrassIRx,bottomgrassy+0.35f,centreZ-dif2,1.0f},//TR
-    //     {-bottomgrassIRx,bottomgrassy,centreZ-0.3f,1.0f},///BR
-    //     {-bottomgrassORx,bottomgrassy,centreZ-0,1.0f}//BL
-        
-    // );
-
-    // Square<4> LPF(
-    //     {-bottomgrassORx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TL
-    //     {-bottomgrassIRx,bottomgrassy+0.35f,centreZ+dif2,1.0f},//TR
-    //     {-bottomgrassIRx,bottomgrassy,centreZ+dif2,1.0f},///BR
-    //     {-bottomgrassORx,bottomgrassy,centreZ+dif2,1.0f}//BL
-        
-    // );
-
-    // Cube<4> LPot(LPF,LPC);
-    
-
 
     Square<4> sgf(
         {bottomgrassIRx,bottomgrassy+0.45f,newZ+dif2,1.0f},//TL
